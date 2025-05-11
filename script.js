@@ -13,20 +13,16 @@ function handleLogin(event) {
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
 
-  // Simple front-end validation
   if (email && password) {
-    // Save login status and email to localStorage
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('userEmail', email);
-
-    // Redirect to home page (adjust filename if needed)
     window.location.href = 'index.html';
   } else {
     alert('Please enter both email and password.');
   }
 }
 
-// Function to check login status and update UI
+// Function to check login status
 function checkLoginStatus() {
   const isLoggedIn = localStorage.getItem('isLoggedIn');
   const userEmail = localStorage.getItem('userEmail');
@@ -41,24 +37,9 @@ function checkLoginStatus() {
 function handleLogout() {
   localStorage.removeItem('isLoggedIn');
   localStorage.removeItem('userEmail');
-  window.location.href = 'login.html'; // Redirect to login page
+  window.location.href = 'login.html';
 }
 
-// Add event listeners when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  const loginForm = document.getElementById('loginForm');
-  const logoutButton = document.getElementById('logoutButton');
-
-  if (loginForm) {
-    loginForm.addEventListener('submit', handleLogin);
-  }
-
-  if (logoutButton) {
-    logoutButton.addEventListener('click', handleLogout);
-  }
-
-  checkLoginStatus();
-});
 // Product data
 const products = [
   {
@@ -91,7 +72,7 @@ const products = [
   }
 ];
 
-// Function to generate star rating HTML
+// Generate star ratings
 function generateStarRating(rating) {
   const fullStars = Math.floor(rating);
   const halfStar = rating % 1 !== 0;
@@ -110,14 +91,18 @@ function generateStarRating(rating) {
   return starsHTML;
 }
 
-// Function to render product cards
+// Render product cards
 function renderProductCards() {
   const productGrid = document.querySelector('.product-grid');
+  if (!productGrid) return;
+
   productGrid.innerHTML = '';
 
   products.forEach(product => {
     const productCard = document.createElement('article');
     productCard.className = 'item-card';
+    productCard.dataset.productId = product.id;
+
     productCard.innerHTML = `
       <div class="product-details">
         <img class="item" src="${product.image}" alt="${product.name}" />
@@ -137,24 +122,33 @@ function renderProductCards() {
   });
 }
 
-// Function to handle adding to cart
+// Add to cart
 function addToCart(productId) {
-  console.log(`Product ${productId} added to cart`);
-  // Here you would typically update the cart state and possibly show a notification
+  if (localStorage.getItem('isLoggedIn') !== 'true') {
+    alert('Please log in to add items to your cart.');
+    window.location.href = 'login.html';
+    return;
+  }
+  alert(`Product ID ${productId} added to cart!`);
 }
 
-// Function to handle buying a product
+// Buy product
 function buyProduct(productId) {
-  console.log(`Buying product ${productId}`);
-  // Here you would typically redirect to a checkout page or open a modal
+  if (localStorage.getItem('isLoggedIn') !== 'true') {
+    alert('Please log in to buy a product.');
+    window.location.href = 'login.html';
+    return;
+  }
+  alert(`Proceeding to buy Product ID ${productId}`);
 }
 
-// Event delegation for add to cart and buy buttons
-document.querySelector('.product-grid').addEventListener('click', (event) => {
+// Event delegation for buttons
+document.addEventListener('click', (event) => {
   const productCard = event.target.closest('.item-card');
   if (!productCard) return;
 
   const productId = productCard.dataset.productId;
+  if (!productId) return;
 
   if (event.target.closest('.add-cart-button')) {
     addToCart(productId);
@@ -163,7 +157,19 @@ document.querySelector('.product-grid').addEventListener('click', (event) => {
   }
 });
 
-// Initialize the page
+// Initialize all on DOM load
 document.addEventListener('DOMContentLoaded', () => {
+  const loginForm = document.getElementById('loginForm');
+  const logoutButton = document.getElementById('logoutButton');
+
+  if (loginForm) {
+    loginForm.addEventListener('submit', handleLogin);
+  }
+
+  if (logoutButton) {
+    logoutButton.addEventListener('click', handleLogout);
+  }
+
+  checkLoginStatus();
   renderProductCards();
 });
