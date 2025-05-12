@@ -92,17 +92,49 @@ function generateStarRating(rating) {
 }
 
 // Render product cards
-function renderProductCards() {
-  const productGrid = document.querySelector('.product-grid');
-  if (!productGrid) return;
+ // Include your login function here
+      function handleLogin(event) {
+        event.preventDefault();
 
-  productGrid.innerHTML = '';
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
 
-  products.forEach(product => {
-    const productCard = document.createElement('article');
-    productCard.className = 'item-card';
-    productCard.dataset.productId = product.id;
+        if (!emailInput || !passwordInput) {
+          alert('Login form elements not found.');
+          return;
+        }
 
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        if (email && password) {
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('userEmail', email);
+          window.location.href = 'index.html'; // Redirect after login
+        } else {
+          alert('Please enter both email and password.');
+        }
+      }
+
+      // Function to check login status
+      function checkLoginStatus() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const userEmail = localStorage.getItem('userEmail');
+        const loginStatus = document.getElementById('loginStatus');
+
+        if (isLoggedIn === 'true' && userEmail && loginStatus) {
+          loginStatus.textContent = `Logged in as: ${userEmail}`;
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+          loginForm.addEventListener('submit', handleLogin);
+        }
+        checkLoginStatus(); // Optional: Shows email if logged in
+      });
+  
     productCard.innerHTML = `
       <div class="product-details">
         <img class="item" src="${product.image}" alt="${product.name}" />
@@ -118,25 +150,9 @@ function renderProductCards() {
         <button class="buy-button"><span class="text-wrapper-4">BUY</span></button>
       </div>
     `;
-    productGrid.appendChild(productCard);
-  });
-}
-document.addEventListener('DOMContentLoaded', () => {
-  const filterLinks = document.querySelectorAll('.sidebar a');
-  const productCards = document.querySelectorAll('.product-card');
-
-  filterLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const filter = link.getAttribute('data-filter');
-
-      productCards.forEach(card => {
-        if (filter === 'All' || card.getAttribute('data-category') === filter) {
-          card.style.display = 'flex'; // show
-        } else {
-          card.style.display = 'none'; // hide
-        }
-      });
-    });
-  });
+   ment.addEventListener('DOMContentLoaded', () => {
+  const loginForm = document.getElementById('loginForm');
+  if (loginForm) {
+    loginForm.addEventListener('submit', handleLogin);
+  }
 });
