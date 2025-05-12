@@ -168,9 +168,14 @@
                     </div>
                   </div>
                 </form>
-                <a href="#" class="cart-icon" aria-label="Shopping Cart">
-                  <img src="https://c.animaapp.com/maixeniyECsT9y/img/carticon-16.svg" alt="Cart Icon" />
-                </a>
+                     <a href="cart.html">
+  <img
+    class="cart-icon"
+    src="https://c.animaapp.com/maksq8u46pByZ6/img/carticon.png"
+    alt="Shopping cart icon"
+  />
+</a>
+
                 <h1 class="crafted-for-gamers">
                   <span class="span">Crafted for Gamers. Powered for </span>
                   <span class="text-wrapper-3">Victory</span>
@@ -679,7 +684,222 @@
             alt="PCCOOLER C3T500 PC Case"
           />
         </div>
-      </div>
+         </header>
+        <main class="cart-container">
+            <h1>Your Shopping Cart</h1>
+            <div id="cart-items"></div>
+            <div class="cart-total">Total: ₱<span id="cart-total">0</span></div>
+        </main>
     </div>
-  </body>
+    </div>
+  </footer>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const filterLinks = document.querySelectorAll('.sidebar a');
+  const productCards = document.querySelectorAll('.product-card');
+  const searchInput = document.querySelector('.search-bar input');
+  const noResults = document.getElementById('no-results');
+  const sortSelect = document.querySelector('.sort-bar select');
+  const productGrid = document.querySelector('.product-grid');
+
+  // Filter function
+  filterLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const filter = link.getAttribute('data-filter');
+      let anyVisible = false;
+
+      productCards.forEach(card => {
+        const categories = card.getAttribute('data-category').split(' ');
+        if (filter === 'All' || categories.includes(filter)) {
+          card.style.display = 'flex';
+          anyVisible = true;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      searchInput.value = '';
+      noResults.style.display = anyVisible ? 'none' : 'block';
+    });
+  });
+
+  // Search function
+  searchInput.addEventListener('input', () => {
+    const searchValue = searchInput.value.toLowerCase().trim();
+    let anyVisible = false;
+
+    productCards.forEach(card => {
+      const productName = card.querySelector('h4').textContent.toLowerCase();
+      if (productName.includes(searchValue)) {
+        card.style.display = 'flex';
+        anyVisible = true;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    noResults.style.display = anyVisible ? 'none' : 'block';
+  });
+
+  // Sort function
+  sortSelect.addEventListener('change', () => {
+    const option = sortSelect.value;
+    const productsArray = Array.from(productCards);
+
+    if (option === 'Price Low to High') {
+      productsArray.sort((a, b) => getPrice(a) - getPrice(b));
+    } else if (option === 'Price High to Low') {
+      productsArray.sort((a, b) => getPrice(b) - getPrice(a));
+    } else if (option === 'Best Sellers') {
+      productsArray.sort((a, b) => getRating(b) - getRating(a));
+    } else {
+      return;
+    }
+
+    productsArray.forEach(product => productGrid.appendChild(product));
+  });
+
+  function getPrice(card) {
+    const priceText = card.querySelector('p').textContent;
+    const price = parseFloat(priceText.replace('₱', '').replace(',', '').trim());
+    return isNaN(price) ? 0 : price;
+  }
+
+  function getRating(card) {
+    const ratingDiv = card.querySelector('.stars');
+    if (!ratingDiv) return 0;
+    
+    let starsText = ratingDiv.textContent.trim();
+    let fullStars = (starsText.match(/★/g) || []).length; // count full stars
+    let halfStars = (starsText.match(/☆/g) || []).length; // count half stars
+    
+    return fullStars + (halfStars * 0.5); // Full stars + half of half stars
+  }
+});
+
+
+</script>
+
+
+<script>
+// Handle opening product modal and adding to cart
+document.addEventListener('DOMContentLoaded', () => {
+  const cartIcons = document.querySelectorAll('.cart-icon');
+  const productModal = document.getElementById('product-modal');
+  const productImg = document.getElementById('modal-product-img');
+  const productName = document.getElementById('modal-product-name');
+  const productPrice = document.getElementById('modal-product-price');
+  const addToCartButton = document.getElementById('add-to-cart-button');
+  const closeProductModal = document.querySelector('.close-product-modal');
+
+  let selectedProduct = {};
+
+  cartIcons.forEach(cartIcon => {
+    cartIcon.addEventListener('click', (e) => {
+      const productCard = cartIcon.closest('.product-card');
+      const imgSrc = productCard.querySelector('img').getAttribute('src');
+      const name = productCard.querySelector('h4').innerText;
+      const price = productCard.querySelector('p').innerText;
+
+      // Fill modal with product details
+      productImg.src = imgSrc;
+      productName.textContent = name;
+      productPrice.textContent = price;
+
+      selectedProduct = {
+        imgSrc,
+        name,
+        price,
+      };
+
+      productModal.style.display = 'block';
+    });
+  });
+
+  closeProductModal.addEventListener('click', () => {
+    productModal.style.display = 'none';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === productModal) {
+      productModal.style.display = 'none';
+    }
+  });
+
+  // Save product to localStorage
+  addToCartButton.addEventListener('click', () => {
+  const size = document.getElementById('modal-product-size').value;
+  const quantity = parseInt(document.getElementById('modal-product-quantity').value);
+
+  const cartItem = {
+    imgSrc: selectedProduct.imgSrc,
+    name: selectedProduct.name,
+    price: selectedProduct.price,
+    size: size,
+    quantity: quantity
+  };
+
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  // Check if the item already exists in the cart (same name and size)
+  const existingItemIndex = cart.findIndex(item => item.name === cartItem.name && item.size === cartItem.size);
+
+  if (existingItemIndex !== -1) {
+    // Item exists, just update the quantity
+    cart[existingItemIndex].quantity += cartItem.quantity;
+  } else {
+    // Item doesn't exist, add a new product to the cart
+    cart.push(cartItem);
+  }
+
+  // Save the updated cart to localStorage
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+  alert('Product added to cart!');
+  productModal.style.display = 'none';
+});
+
+});
+</script>
+
+<script>
+  function submitFeedback() {
+    const feedbackText = document.getElementById('feedback-text').value.trim();
+    
+    if (!feedbackText) {
+      alert('Please enter your feedback before submitting.');
+      return;
+    }
+
+    // For now, we'll just log the feedback and show a confirmation
+    console.log('Feedback submitted:', feedbackText);
+    alert('Thank you for your feedback!');
+    
+    // Clear the text area and close the modal
+    document.getElementById('feedback-text').value = '';
+    closeFeedbackModal();
+  }
+
+  function closeFeedbackModal() {
+    document.getElementById('feedback-modal').style.display = 'none';
+  }
+
+  // Open modal on button click
+  document.querySelector('.feedback-btn').addEventListener('click', function () {
+    document.getElementById('feedback-modal').style.display = 'block';
+  });
+
+  // Close modal when clicking outside it
+  window.addEventListener('click', function (event) {
+    const modal = document.getElementById('feedback-modal');
+    if (event.target === modal) {
+      modal.style.display = 'none';
+    }
+  });
+</script>
+
+
+
+</body>
 </html>

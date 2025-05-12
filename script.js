@@ -121,55 +121,22 @@ function renderProductCards() {
     productGrid.appendChild(productCard);
   });
 }
-
-// Add to cart
-function addToCart(productId) {
-  if (localStorage.getItem('isLoggedIn') !== 'true') {
-    alert('Please log in to add items to your cart.');
-    window.location.href = 'login.html';
-    return;
-  }
-  alert(`Product ID ${productId} added to cart!`);
-}
-
-// Buy product
-function buyProduct(productId) {
-  if (localStorage.getItem('isLoggedIn') !== 'true') {
-    alert('Please log in to buy a product.');
-    window.location.href = 'login.html';
-    return;
-  }
-  alert(`Proceeding to buy Product ID ${productId}`);
-}
-
-// Event delegation for buttons
-document.addEventListener('click', (event) => {
-  const productCard = event.target.closest('.item-card');
-  if (!productCard) return;
-
-  const productId = productCard.dataset.productId;
-  if (!productId) return;
-
-  if (event.target.closest('.add-cart-button')) {
-    addToCart(productId);
-  } else if (event.target.closest('.buy-button')) {
-    buyProduct(productId);
-  }
-});
-
-// Initialize all on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-  const loginForm = document.getElementById('loginForm');
-  const logoutButton = document.getElementById('logoutButton');
+  const filterLinks = document.querySelectorAll('.sidebar a');
+  const productCards = document.querySelectorAll('.product-card');
 
-  if (loginForm) {
-    loginForm.addEventListener('submit', handleLogin);
-  }
+  filterLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const filter = link.getAttribute('data-filter');
 
-  if (logoutButton) {
-    logoutButton.addEventListener('click', handleLogout);
-  }
-
-  checkLoginStatus();
-  renderProductCards();
+      productCards.forEach(card => {
+        if (filter === 'All' || card.getAttribute('data-category') === filter) {
+          card.style.display = 'flex'; // show
+        } else {
+          card.style.display = 'none'; // hide
+        }
+      });
+    });
+  });
 });

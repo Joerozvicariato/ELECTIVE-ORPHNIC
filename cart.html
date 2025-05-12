@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Revanna - Checkout</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+   <style>
+    body {
+      font-family: 'Oswald', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+  background: #4caf50;
+  padding: 20px 40px;
+  display: flex;
+  gap: 50px;
+  justify-content: flex-end;
+}
+nav a {
+  color: white;
+  font-weight: 600;
+}
+nav a:hover {
+  color: #080808;
+}
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .cart-items {
+      margin-bottom: 30px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .checkout-container {
+      display: none;
+      flex-wrap: wrap;
+      gap: 30px;
+      border-top: 2px solid #ccc;
+      padding-top: 30px;
+    }
+
+    .form-section, .summary-section {
+      border: 1px solid #ccc;
+      padding: 30px;
+      background: #fff;
+      border-radius: 10px;
+    }
+
+    .form-section {
+      flex: 2;
+      min-width: 300px;
+    }
+
+    .form-section input,
+    .form-section select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .summary-section {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .summary-section h3 {
+      margin-bottom: 20px;
+    }
+
+    .summary-section p {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+    }
+
+    .summary-section h3 span {
+      float: right;
+    }
+
+    .checkout-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    .checkout-button:hover {
+      background-color: #45a049;
+    }
+
+    .modal {
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: none;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .modal-content h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .modal-content p {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .modal-content .cta-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .modal-content .cta-button:hover {
+      background-color: #45a049;
+    }
+
+    /* Footer */
+.footer {
+  background-color: #2a2a2a;
+  color: white;
+  padding: 40px 20px;
+}
+
+    .footer-heading {
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    .footer-box {
+      max-width: 300px;
+      margin-bottom: 20px;
+    }
+
+    .connect-btn {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .checkout-container {
+        flex-direction: column;
+      }
+
+      .form-section, .summary-section {
+        width: 100%;
+        padding: 20px;
+      }
+
+      .summary-section h3,
+      .summary-section p {
+        font-size: 14px;
+      }
+
+      .modal-content {
+        margin: 20% auto;
+        width: 95%;
+      }
+
+      .form-section input,
+      .form-section select {
+        padding: 8px;
+        font-size: 14px;
+      }
+
+      nav a {
+        font-size: 16px;
+      }
+
+      .checkout-button {
+        font-size: 14px;
+        padding: 10px 20px;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer-box {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .footer-heading {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="#">Cart</a>
+    <a href="#">Contact</a>
+  </nav>
+
+  <div class="container">
+    <h2>Your Cart</h2>
+    <div id="cart-items" class="cart-items"></div>
+    <button id="checkout-now" class="checkout-button">Checkout Now</button>
+
+    <!-- Checkout Form Section -->
+    <div id="checkout-form" class="checkout-container">
+      <div class="form-section">
+        <h2>Shipping Address</h2>
+        <form id="checkout-form-submit">
+          <div style="display: flex; gap: 10px;">
+            <input type="text" id="first-name" placeholder="First Name*" required>
+            <input type="text" id="last-name" placeholder="Last Name*" required>
+          </div>
+          <select id="country" required>
+            <option value="Philippines">Philippines</option>
+          </select>
+          <input type="text" id="address-line-1" placeholder="Address Line 1*" required>
+          <input type="text" id="address-line-2" placeholder="Address Line 2">
+          <input type="text" id="postal-code" placeholder="Postal Code*" required>
+          <input type="text" id="city" placeholder="City*" required>
+          <input type="text" id="state" placeholder="State/Province*" required>
+          <input type="text" id="phone" placeholder="Phone Number*" required>
+          <input type="email" id="customer-email-input" placeholder="Email Address*" required>
+          <p style="font-size: 12px; color: gray;">
+            Order confirmation and tracking info will be sent to this email.
+          </p>
+          <br>
+          <button type="submit" class="checkout-button">Continue</button>
+        </form>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="summary-section">
+        <h3>Order Summary</h3>
+        <p>Original Price <span id="original-price">₱0.00</span></p>
+        <p>Estimated Shipping <span>₱550.00</span></p>
+        <hr style="margin: 20px 0;">
+        <h3>Estimated Total <span id="estimated-total">₱0.00</span></h3>
+        <br>
+        <button id="continue-summary" class="checkout-button">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thank You Modal -->
+  <div id="thank-you-modal" class="modal">
+    <div class="modal-content">
+      <h2>THANK YOU!</h2>
+      <p>Your journey just got an upgrade. We're processing your order and you'll receive a confirmation email shortly at <span id="customer-email"></span>.</p>
+      <p>While we get your gear ready, why not check out our latest riding tips, gear reviews, and style inspiration?</p>
+      <p>Head over to our Moto Journal and fuel your passion for the ride.</p>
+      <button class="cta-button" onclick="window.location.href = 'index.html'">BACK TO HOME</button>
+    </div>
+  </div>
+
+  <!-- Feedback Modal -->
+  <div id="feedback-modal" class="modal">
+    <div class="modal-content">
+      <h2>Leave Feedback</h2>
+      <textarea id="feedback-text" placeholder="Tell us what you think..." rows="5" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+      <br><br>
+      <button class="cta-button" onclick="submitFeedback()">Submit</button>
+      <button class="cta-button" style="background-color: gray; margin-left: 10px;" onclick="closeFeedbackModal()">Cancel</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <h2 class="footer-heading">Ride Your Dream, Live the Journey</h2>
+    <div class="footer-content">
+      <div class="footer-box">
+        <p class="rating-title">Over 11,000 5-Star Journeys</p>
+        <p class="rating-subtitle">See why riders choose us again and again.</p>
+        <div class="stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div>
+        <p class="review-count">11,000+ reviews</p>
+      </div>
+
+      <div class="footer-box">
+        <h3 class="box-title">Help Us Get Better</h3>
+        <p class="box-subtitle">Love something? Need a tweak? We’d love to hear your feedback.</p>
+        <button class="feedback-btn">LEAVE FEEDBACK</button>
+      </div>
+
+      <div class="footer-box connect">
+        <h3 class="box-title">CONNECT WITH US</h3>
+        <a href="mailto:revanna@gmail.com" class="connect-btn email" style="text-decoration: none;">
+          📧 revanna@gmail.com
+        </a>
+        <button class="connect-btn call">
+          📞 09531702361
+        </button>
+        <p class="disclaimer">
+          Signing up for Revanna emails or texts means receiving marketing and other messages from Revanna via email or phone. Consent is not a condition of purchase. Msg & data rates may apply. View our <a href="#">privacy policy</a> and <a href="#">terms</a>.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const cartItemsContainer = document.getElementById('cart-items');
+    const checkoutButton = document.getElementById('checkout-now');
+    const checkoutForm = document.getElementById('checkout-form');
+    const originalPriceEl = document.getElementById('original-price');
+    const estimatedTotalEl = document.getElementById('estimated-total');
+    const thankYouModal = document.getElementById('thank-you-modal');
+    const customerEmailEl = document.getElementById('customer-email');
+    const continueSummaryButton = document.getElementById('continue-summary');
+    const emailInput = document.getElementById('customer-email-input');
+    const form = document.getElementById('checkout-form-submit');
+
+    const feedbackModal = document.getElementById('feedback-modal');
+    const feedbackButton = document.querySelector('.feedback-btn');
+
+    feedbackButton.addEventListener('click', () => {
+      feedbackModal.style.display = 'block';
+    });
+
+    function closeFeedbackModal() {
+      feedbackModal.style.display = 'none';
+    }
+
+    function submitFeedback() {
+      const feedback = document.getElementById('feedback-text').value;
+      if (feedback.trim() === "") {
+        alert("Please enter your feedback before submitting.");
+        return;
+      }
+      alert("Thank you for your feedback!");
+      document.getElementById('feedback-text').value = "";
+      feedbackModal.style.display = 'none';
+    }
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function renderCart() {
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+        checkoutButton.style.display = 'none';
+        return;
+      }
+
+      cartItemsContainer.innerHTML = '';
+      let totalPrice = 0;
+
+      cart.forEach(item => {
+        const itemPrice = parseFloat(item.price.replace('₱', '').replace(',', ''));
+        totalPrice += itemPrice * item.quantity;
+
+        const div = document.createElement('div');
+        div.classList.add('cart-item');
+        div.innerHTML = `
+          <img src="${item.imgSrc}" alt="${item.name}">
+          <div class="cart-item-info">
+            <h3>${item.name}</h3>
+            <p>Size: ${item.size}</p>
+            <p>Quantity: ${item.quantity}</p>
+            <p>Price: ₱${itemPrice.toFixed(2)}</p>
+          </div>
+        `;
+        cartItemsContainer.appendChild(div);
+      });
+
+      originalPriceEl.textContent = `₱${totalPrice.toFixed(2)}`;
+      const estimatedTotal = totalPrice + 550;
+      estimatedTotalEl.textContent = `₱${estimatedTotal.toFixed(2)}`;
+    }
+
+    checkoutButton.addEventListener('click', () => {
+      checkoutButton.style.display = 'none';
+      checkoutForm.style.display = 'flex';
+    });
+
+    function validateForm() {
+      const requiredFields = [
+        'first-name', 'last-name', 'address-line-1', 'postal-code', 'city', 'state', 'phone', 'customer-email-input'
+      ];
+      for (let fieldId of requiredFields) {
+        const field = document.getElementById(fieldId);
+        if (!field.value) {
+          alert('Please fill in all required fields.');
+          return false;
+        }
+      }
+      return true;
+    }
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      if (!validateForm()) return;
+
+      localStorage.removeItem('cart');
+      customerEmailEl.textContent = emailInput.value;
+      thankYouModal.style.display = 'block';
+      cart = [];
+      renderCart();
+    });
+
+    continueSummaryButton.addEventListener('click', function() {
+      if (!validateForm()) return;
+
+      localStorage.removeItem('cart');
+      customerEmailEl.textContent = emailInput.value;
+      thankYouModal.style.display = 'block';
+      cart = [];
+      renderCart();
+    });
+
+    window.addEventListener('click', function(event) {
+      if (event.target === thankYouModal) {
+        thankYouModal.style.display = 'none';
+      } else if (event.target === feedbackModal) {
+        feedbackModal.style.display = 'none';
+      }
+    });
+
+    renderCart();
+  </script>
+</body>
+</html>
