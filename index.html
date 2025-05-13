@@ -237,8 +237,7 @@
                       <img class="peso" src="https://c.animaapp.com/maixeniyECsT9y/img/peso-15.png" alt="Peso Symbol" />
                     </div>
                     <button class="add-cart-button">
-                      <img
-                        class="cart-icon-2"
+                      <img class="add-to-cart-button"
                         src="https://c.animaapp.com/maixeniyECsT9y/img/carticon.png"
                         alt="Add to Cart"
                       />
@@ -259,7 +258,7 @@
                       <img class="peso" src="https://c.animaapp.com/maixeniyECsT9y/img/peso-15.png" alt="Peso Symbol" />
                     </div>
                     <button class="add-cart-button">
-                      <img
+                      <img class="add-to-cart-button"
                         class="cart-icon-2"
                         src="https://c.animaapp.com/maixeniyECsT9y/img/carticon-4.png"
                         alt="Add to Cart"
@@ -291,7 +290,7 @@
                       <img class="peso" src="https://c.animaapp.com/maixeniyECsT9y/img/peso-15.png" alt="Peso Symbol" />
                     </div>
                     <button class="add-cart-button">
-                      <img
+                      <img class="add-to-cart-button"
                         class="cart-icon-2"
                         src="https://c.animaapp.com/maixeniyECsT9y/img/carticon-8.png"
                         alt="Add to Cart"
@@ -318,7 +317,7 @@
                       <img class="peso" src="https://c.animaapp.com/maixeniyECsT9y/img/peso-15.png" alt="Peso Symbol" />
                     </div>
                     <button class="add-cart-button">
-                      <img
+                      <img class="add-to-cart-button"
                         class="cart-icon-2"
                         src="https://c.animaapp.com/maixeniyECsT9y/img/carticon-12.png"
                         alt="Add to Cart"
@@ -352,7 +351,7 @@
                     <img class="peso" src="https://c.animaapp.com/maixeniyECsT9y/img/peso-15.png" alt="Peso Symbol" />
                   </div>
                   <button class="cart-icon-wrapper">
-                    <img
+                    <img class="add-to-cart-button"
                       class="cart-icon-2"
                       src="https://c.animaapp.com/maixeniyECsT9y/img/carticon-1.png"
                       alt="Add to Cart"
@@ -692,7 +691,10 @@
         </main>
     </div>
     </div>
+
   </footer>
+
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const filterLinks = document.querySelectorAll('.sidebar a');
@@ -783,85 +785,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <script>
-// Handle opening product modal and adding to cart
-document.addEventListener('DOMContentLoaded', () => {
-  const cartIcons = document.querySelectorAll('.cart-icon');
-  const productModal = document.getElementById('product-modal');
-  const productImg = document.getElementById('modal-product-img');
-  const productName = document.getElementById('modal-product-name');
-  const productPrice = document.getElementById('modal-product-price');
-  const addToCartButton = document.getElementById('add-to-cart-button');
-  const closeProductModal = document.querySelector('.close-product-modal');
+  document.addEventListener('DOMContentLoaded', () => {
+  const cartIcons = document.querySelectorAll('.add-to-cart-button');
 
-  let selectedProduct = {};
+  cartIcons.forEach(icon => {
+    icon.addEventListener('click', () => {
+      const productCard = icon.closest('.item-card');
+      if (!productCard) return;
 
-  cartIcons.forEach(cartIcon => {
-    cartIcon.addEventListener('click', (e) => {
-      const productCard = cartIcon.closest('.product-card');
-      const imgSrc = productCard.querySelector('img').getAttribute('src');
-      const name = productCard.querySelector('h4').innerText;
-      const price = productCard.querySelector('p').innerText;
+      const name = productCard.querySelector('h3.title')?.innerText || 'Unnamed Product';
+      const price = productCard.querySelector('.price-2')?.innerText || '0';
 
-      // Fill modal with product details
-      productImg.src = imgSrc;
-      productName.textContent = name;
-      productPrice.textContent = price;
+      // Try to find the product image (excluding rating/peso images)
+      let imgSrc = '';
+      const allImages = productCard.querySelectorAll('img');
+      allImages.forEach(img => {
+        const src = img.getAttribute('src');
+        // Select the image that doesn't have "rating" or "peso" in its URL
+        if (!src.includes('rating') && !src.includes('peso') && !src.includes('carticon')) {
+          imgSrc = src;
+        }
+      });
 
-      selectedProduct = {
-        imgSrc,
+      const cartItem = {
         name,
         price,
+        imgSrc,  // Correct image selected here
+        quantity: 1,
+        size: null
       };
 
-      productModal.style.display = 'block';
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      const existing = cart.find(item => item.name === cartItem.name && item.size === cartItem.size);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push(cartItem);
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+
+      alert('Product added to cart!');
     });
   });
-
-  closeProductModal.addEventListener('click', () => {
-    productModal.style.display = 'none';
-  });
-
-  window.addEventListener('click', (e) => {
-    if (e.target === productModal) {
-      productModal.style.display = 'none';
-    }
-  });
-
-  // Save product to localStorage
-  addToCartButton.addEventListener('click', () => {
-  const size = document.getElementById('modal-product-size').value;
-  const quantity = parseInt(document.getElementById('modal-product-quantity').value);
-
-  const cartItem = {
-    imgSrc: selectedProduct.imgSrc,
-    name: selectedProduct.name,
-    price: selectedProduct.price,
-    size: size,
-    quantity: quantity
-  };
-
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-  // Check if the item already exists in the cart (same name and size)
-  const existingItemIndex = cart.findIndex(item => item.name === cartItem.name && item.size === cartItem.size);
-
-  if (existingItemIndex !== -1) {
-    // Item exists, just update the quantity
-    cart[existingItemIndex].quantity += cartItem.quantity;
-  } else {
-    // Item doesn't exist, add a new product to the cart
-    cart.push(cartItem);
-  }
-
-  // Save the updated cart to localStorage
-  localStorage.setItem('cart', JSON.stringify(cart));
-
-  alert('Product added to cart!');
-  productModal.style.display = 'none';
 });
 
-});
-</script>
+  </script>
+  
+  
 
 <script>
   function submitFeedback() {
