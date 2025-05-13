@@ -15,7 +15,7 @@
     }
 
     nav {
-  background: #4caf50;
+  background: #081f44;
   padding: 20px 40px;
   display: flex;
   gap: 50px;
@@ -109,7 +109,7 @@ nav a:hover {
     }
 
     .checkout-button {
-      background-color: #4CAF50;
+      background-color: #081f44;
       color: white;
       padding: 12px 30px;
       font-size: 16px;
@@ -123,7 +123,7 @@ nav a:hover {
     }
 
     .checkout-button:hover {
-      background-color: #45a049;
+      background-color: #081f44;
     }
 
     .modal {
@@ -160,7 +160,7 @@ nav a:hover {
     }
 
     .modal-content .cta-button {
-      background-color: #4CAF50;
+      background-color:  #081f44;
       color: white;
       padding: 12px 30px;
       font-size: 16px;
@@ -171,41 +171,45 @@ nav a:hover {
     }
 
     .modal-content .cta-button:hover {
-      background-color: #45a049;
+      background-color:  #081f44;
     }
-
-    /* Footer */
-.footer {
-  background-color: #2a2a2a;
-  color: white;
-  padding: 40px 20px;
-}
-
-    .footer-heading {
-      font-size: 24px;
-      margin-bottom: 30px;
-    }
-
-    .footer-content {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-    }
-
-    .footer-box {
-      max-width: 300px;
-      margin-bottom: 20px;
-    }
-
-    .connect-btn {
-      display: block;
-      margin: 10px auto;
-      padding: 10px;
-      background-color: #4CAF50;
+/* Footer */
+    footer {
+      background: #081f44;
       color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+      padding: 2rem 0;
+      font-size: 0.9rem;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: auto;
+      margin-bottom: 2rem;
+    }
+
+    .footer-column {
+      width: 22%;
+    }
+
+    .footer-column h4 {
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .footer-column p {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 0.8rem;
+      margin-top: 2rem;
+    }
+
+    .footer-bottom p {
+      margin: 0.5rem 0;
     }
 
     @media (max-width: 768px) {
@@ -239,10 +243,11 @@ nav a:hover {
         font-size: 14px;
       }
 
-      nav a {
-        font-size: 16px;
-      }
-
+     /* Navbar */
+    .navbar {
+      background: #081f44;
+      padding: 1rem 2rem;
+    }
       .checkout-button {
         font-size: 14px;
         padding: 10px 20px;
@@ -266,12 +271,15 @@ nav a:hover {
 </head>
 
 <body>
-  <nav>
+<nav>
     <a href="index.html">Home</a>
     <a href="#">Cart</a>
     <a href="#">Contact</a>
   </nav>
-
+   <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-content">
+    </header>
   <div class="container">
     <h2>Your Cart</h2>
     <div id="cart-items" class="cart-items"></div>
@@ -338,156 +346,71 @@ nav a:hover {
       <button class="cta-button" style="background-color: gray; margin-left: 10px;" onclick="closeFeedbackModal()">Cancel</button>
     </div>
   </div>
-
-  <footer class="footer">
-    <h2 class="footer-heading">Ride Your Dream, Live the Journey</h2>
-    <div class="footer-content">
-      <div class="footer-box">
-        <p class="rating-title">Over 11,000 5-Star Journeys</p>
-        <p class="rating-subtitle">See why riders choose us again and again.</p>
-        <div class="stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div>
-        <p class="review-count">11,000+ reviews</p>
+<!-- Footer -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-column">
+        <h4>ABOUT US</h4>
+        <p>ORPHIC is an eCommerce platform based in the Philippines...</p>
       </div>
-
-      <div class="footer-box">
-        <h3 class="box-title">Help Us Get Better</h3>
-        <p class="box-subtitle">Love something? Need a tweak? We’d love to hear your feedback.</p>
-        <button class="feedback-btn">LEAVE FEEDBACK</button>
+      <div class="footer-column">
+        <h4>PAYMENT METHODS</h4>
+        <p>GCash<br/>BPI<br/>PayPal</p>
       </div>
-
-      <div class="footer-box connect">
-        <h3 class="box-title">CONNECT WITH US</h3>
-        <a href="mailto:revanna@gmail.com" class="connect-btn email" style="text-decoration: none;">
-          📧 revanna@gmail.com
-        </a>
-        <button class="connect-btn call">
-          📞 09531702361
-        </button>
-        <p class="disclaimer">
-          Signing up for Revanna emails or texts means receiving marketing and other messages from Revanna via email or phone. Consent is not a condition of purchase. Msg & data rates may apply. View our <a href="#">privacy policy</a> and <a href="#">terms</a>.
-        </p>
+      <div class="footer-column">
+        <h4>LOGISTICS</h4>
+        <p>LBC<br/>J&T<br/>2GO<br/>Ninja Van</p>
+      </div>
+      <div class="footer-column">
+        <h4>CUSTOMER SERVICE</h4>
+        <p>Help Centre<br/>Payment Methods<br/>Returns<br/>Tracking</p>
       </div>
     </div>
+    <div class="footer-bottom">
+      <p>FOLLOW US 🔗 Instagram, Twitter, LinkedIn, Facebook</p>
+      <p>© Orphic2025. All rights reserved.</p>
+    </div>
   </footer>
+    </div>
 
-  <script>
-    const cartItemsContainer = document.getElementById('cart-items');
-    const checkoutButton = document.getElementById('checkout-now');
-    const checkoutForm = document.getElementById('checkout-form');
-    const originalPriceEl = document.getElementById('original-price');
-    const estimatedTotalEl = document.getElementById('estimated-total');
-    const thankYouModal = document.getElementById('thank-you-modal');
-    const customerEmailEl = document.getElementById('customer-email');
-    const continueSummaryButton = document.getElementById('continue-summary');
-    const emailInput = document.getElementById('customer-email-input');
-    const form = document.getElementById('checkout-form-submit');
+    <div id="cart-items" class="cart-items"></div>
 
-    const feedbackModal = document.getElementById('feedback-modal');
-    const feedbackButton = document.querySelector('.feedback-btn');
 
-    feedbackButton.addEventListener('click', () => {
-      feedbackModal.style.display = 'block';
-    });
 
-    function closeFeedbackModal() {
-      feedbackModal.style.display = 'none';
-    }
+    <!-- This script displays the items from localStorage -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const cartContainer = document.getElementById('cart-items');  // Changed to 'cart-items'
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    function submitFeedback() {
-      const feedback = document.getElementById('feedback-text').value;
-      if (feedback.trim() === "") {
-        alert("Please enter your feedback before submitting.");
-        return;
-      }
-      alert("Thank you for your feedback!");
-      document.getElementById('feedback-text').value = "";
-      feedbackModal.style.display = 'none';
-    }
+  console.log('Cart data:', cart); // Log the cart data to the console for debugging
 
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  if (cart.length === 0) {
+    cartContainer.innerHTML = '<p>Your cart is empty.</p>';
+    return;
+  }
 
-    function renderCart() {
-      if (cart.length === 0) {
-        cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
-        checkoutButton.style.display = 'none';
-        return;
-      }
+  cart.forEach(item => {
+    const itemDiv = document.createElement('div');
+    itemDiv.classList.add('cart-item');
+    itemDiv.style.marginBottom = '20px';
 
-      cartItemsContainer.innerHTML = '';
-      let totalPrice = 0;
+    itemDiv.innerHTML = `
+      <img src="${item.imgSrc}" alt="${item.name}" style="width: 100px;" />
+      <h4>${item.name}</h4>
+      <p>Price: ₱${item.price}</p>  <!-- Make sure to display the price correctly -->
+      <p>Quantity: ${item.quantity}</p>
+    `;
 
-      cart.forEach(item => {
-        const itemPrice = parseFloat(item.price.replace('₱', '').replace(',', ''));
-        totalPrice += itemPrice * item.quantity;
+    cartContainer.appendChild(itemDiv);
+  });
+});
 
-        const div = document.createElement('div');
-        div.classList.add('cart-item');
-        div.innerHTML = `
-          <img src="${item.imgSrc}" alt="${item.name}">
-          <div class="cart-item-info">
-            <h3>${item.name}</h3>
-            <p>Size: ${item.size}</p>
-            <p>Quantity: ${item.quantity}</p>
-            <p>Price: ₱${itemPrice.toFixed(2)}</p>
-          </div>
-        `;
-        cartItemsContainer.appendChild(div);
-      });
 
-      originalPriceEl.textContent = `₱${totalPrice.toFixed(2)}`;
-      const estimatedTotal = totalPrice + 550;
-      estimatedTotalEl.textContent = `₱${estimatedTotal.toFixed(2)}`;
-    }
-
-    checkoutButton.addEventListener('click', () => {
-      checkoutButton.style.display = 'none';
-      checkoutForm.style.display = 'flex';
-    });
-
-    function validateForm() {
-      const requiredFields = [
-        'first-name', 'last-name', 'address-line-1', 'postal-code', 'city', 'state', 'phone', 'customer-email-input'
-      ];
-      for (let fieldId of requiredFields) {
-        const field = document.getElementById(fieldId);
-        if (!field.value) {
-          alert('Please fill in all required fields.');
-          return false;
-        }
-      }
-      return true;
-    }
-
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      if (!validateForm()) return;
-
-      localStorage.removeItem('cart');
-      customerEmailEl.textContent = emailInput.value;
-      thankYouModal.style.display = 'block';
-      cart = [];
-      renderCart();
-    });
-
-    continueSummaryButton.addEventListener('click', function() {
-      if (!validateForm()) return;
-
-      localStorage.removeItem('cart');
-      customerEmailEl.textContent = emailInput.value;
-      thankYouModal.style.display = 'block';
-      cart = [];
-      renderCart();
-    });
-
-    window.addEventListener('click', function(event) {
-      if (event.target === thankYouModal) {
-        thankYouModal.style.display = 'none';
-      } else if (event.target === feedbackModal) {
-        feedbackModal.style.display = 'none';
-      }
-    });
-
-    renderCart();
-  </script>
+    </script>
 </body>
 </html>
+ 
+    
+
+
